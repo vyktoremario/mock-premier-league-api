@@ -3,6 +3,15 @@ import helmet from 'helmet'; // https://expressjs.com/en/advanced/best-practice-
 import { settings } from './config'
 import { LogHelper } from './utils';
 import cors from 'cors';
+import { connectDB } from './db/connect-db';
+import { connectInMemoryDB } from './db/connect-in-memory-db';
+import { UserModel } from './models/user-model';
+
+if (process.env.NODE_ENV === "test") {
+  connectInMemoryDB();
+} else {
+  connectDB();
+}
 
 
 const app = express()
@@ -11,10 +20,28 @@ const app = express()
   .use(express.urlencoded({ extended: true }))
   .use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+  const user = await UserModel.find({});
   res.status(200).send({
     code: 200,
     message: 'Hello you must be authenticated to proceed!',
+    result: user
+  });
+});
+
+app.get('/create', async (req, res) => {
+  const data = {
+    email: 'mario@gmail.com',
+    firstName: 'victor',
+    lastName: 'umeh',
+    password: 'admin',
+    roles: 'admin',
+  }
+  const user = await UserModel.create(data);
+  res.status(200).send({
+    code: 200,
+    message: 'Hello you must be authenticated to proceed!',
+    result: user
   });
 });
 
