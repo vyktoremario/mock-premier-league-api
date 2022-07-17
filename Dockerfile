@@ -1,4 +1,4 @@
-FROM node:16 as development
+FROM node:16-alpine as development
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -11,16 +11,14 @@ RUN yarn install
 # Bundle app source
 COPY . .
 
-RUN yarn start:prod
 
-
-FROM node:16 as production
+FROM node:16-alpine as production
 
 WORKDIR /usr/src/app
 
 COPY --from=development /usr/src/app/dist .
 
-RUN yarn install --frozen-lockfile --only=production
+# RUN yarn install --frozen-lockfile --only=production
 
-EXPOSE 8080
-CMD [ "node", "index.js" ]
+# EXPOSE 3000
+# CMD [ "node", "index.js" ]
