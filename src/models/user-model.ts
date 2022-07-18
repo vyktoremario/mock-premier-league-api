@@ -16,6 +16,9 @@ const userSchema = new Schema<IUser>(
         enum: ['admin','user',], 
         default: 'user' 
     },
+    token: {
+        type: String,
+    },
   },
   { timestamps: true }
 );
@@ -40,6 +43,9 @@ userSchema.pre("save", async function (next) {
 });
 // verify password
 userSchema.methods.isPasswordMatch = async function (enteredPassword: string) {
-  return bcrypt.compare(enteredPassword, this.password);
+  return bcrypt.compare(enteredPassword, this.password, (err, res) => {
+    if (err) return new Error(err.message)
+    return res
+  });
 };
-export const UserModel = model("User", userSchema);
+export const UserModel = model<IUser>("User", userSchema);

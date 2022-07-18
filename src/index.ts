@@ -5,7 +5,9 @@ import { LogHelper } from './utils';
 import cors from 'cors';
 import { connectDB } from './db/connect-db';
 import { connectInMemoryDB } from './db/connect-in-memory-db';
-import { UserModel } from './models/user-model';
+import { UserModel } from './models';
+import verifyAdminToken from './middlewares/admin-middleware';
+import adminRoutes from './routes/admin-routes';
 
 if (process.env.NODE_ENV === "test") {
   connectInMemoryDB();
@@ -20,7 +22,7 @@ const app = express()
   .use(express.urlencoded({ extended: true }))
   .use(express.json());
 
-app.get('/', async (req, res) => {
+app.get('/', verifyAdminToken, async (req, res) => {
   const user = await UserModel.find({});
   res.status(200).send({
     code: 200,
@@ -29,7 +31,7 @@ app.get('/', async (req, res) => {
   });
 });
 
-app.get('/create', async (req, res) => {
+app.get('/create', verifyAdminToken, async (req, res) => {
   const data = {
     email: 'mario@gmail.com',
     firstName: 'victor',
@@ -44,6 +46,8 @@ app.get('/create', async (req, res) => {
     result: user
   });
 });
+
+app.use('/api/v1/fixtures',adminRoutes)
 
 
 

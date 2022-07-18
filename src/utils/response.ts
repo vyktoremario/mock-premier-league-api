@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-type ResponseData = '' | '' | ''
+type ResponseData = any
 
 class ResponseStatus {
   statusCode: number | null;

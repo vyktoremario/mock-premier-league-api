@@ -4,8 +4,20 @@ export interface IUser {
     email: string;
     password: string;
     gender: string;
-    roles: {
-        type: string;
-        enum: string[]
-    };
+    roles: string;
+    token: string
+}
+
+export interface IFixture {
+    home_team: string;
+    away_team: string;
+    status: string;
+    match_link: string;
+}
+
+export interface ITeam {
+    name: string;
+    description: string;
+    size: number;
+    coach: string;
 }
