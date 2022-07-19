@@ -1,9 +1,9 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 const {
   PORT = 3000,
-  HOST = 'localhost',
+  HOST = "localhost",
   RedisUrl,
   RedisPort,
   serverUrl,
@@ -15,8 +15,8 @@ export const settings = {
   PORT,
   HOST,
   serverUrl,
-  redisUrl: RedisUrl || '127.0.0.1',
+  redisUrl: RedisUrl || "127.0.0.1",
   redisPort: RedisPort ? parseInt(RedisPort) : 6379,
-  ENABLE_DEBUGGER: ENABLE_DEBUGGER === 'true',
-  production: production === 'true',
+  ENABLE_DEBUGGER: ENABLE_DEBUGGER === "true",
+  production: production === "true",
 };

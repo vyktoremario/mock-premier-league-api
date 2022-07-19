@@ -5,32 +5,21 @@ import bcrypt from "bcryptjs";
 const userSchema = new Schema<IUser>(
   {
     email: { type: String, require: true, unique: true },
-    firstName: { type: String, require: true },
-    lastName: { type: String, require: true },
-    gender: { type: String, require: true },
+    first_name: String,
+    last_name: String,
+    username: { type: String, required: true, unique: true },
     password: {
       type: String,
+      required: true,
     },
-    roles: { 
-        type: String, 
-        enum: ['admin','user',], 
-        default: 'user' 
-    },
-    token: {
-        type: String,
+    role: {
+      type: String,
+      enum: ["admin", "user"],
+      default: "user",
     },
   },
   { timestamps: true }
 );
-userSchema.methods.toJSON = function () {
-  
-  const user = this;
-  const userObject = user.toObject();
-
-  delete userObject.password;
-
-  return userObject;
-};
 // hash password
 userSchema.pre("save", async function (next) {
   try {
@@ -41,11 +30,4 @@ userSchema.pre("save", async function (next) {
     // eslint-disable-next-line no-console
   }
 });
-// verify password
-userSchema.methods.isPasswordMatch = async function (enteredPassword: string) {
-  return bcrypt.compare(enteredPassword, this.password, (err, res) => {
-    if (err) return new Error(err.message)
-    return res
-  });
-};
 export const UserModel = model<IUser>("User", userSchema);

@@ -1,4 +1,4 @@
-import { settings } from '../config';
+import { settings } from "../config";
 
 export class LogHelper {
   /**
@@ -8,18 +8,12 @@ export class LogHelper {
    */
   static debug(message: string, ...args: any[]) {
     if (settings.ENABLE_DEBUGGER) {
-      console.log(
-        `[DEBUG] ${message}`,
-        ...args
-      );
+      console.log(`[DEBUG] ${message}`, ...args);
     }
   }
 
   static info(message: string, ...args: any[]): void {
-    console.log(
-      `[INFO] ${message}`,
-      ...args
-    );
+    console.log(`[INFO] ${message}`, ...args);
   }
 
   static log(message: string, ...args: any[]): void {
@@ -32,9 +26,9 @@ export class LogHelper {
     statusCode?: number | string
   ): void {
     console.error(
-      `[ERROR] ${
-        calledFrom ? `[${calledFrom}] ` : ''
-      }${statusCode ? `[status: ${statusCode}] ` : ''}${message}`
+      `[ERROR] ${calledFrom ? `[${calledFrom}] ` : ""}${
+        statusCode ? `[status: ${statusCode}] ` : ""
+      }${message}`
     );
   }
 }

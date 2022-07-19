@@ -1,23 +1,23 @@
 export interface IUser {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    gender: string;
-    roles: string;
-    token: string
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  username: string;
+  role: string;
 }
 
 export interface IFixture {
-    home_team: string;
-    away_team: string;
-    status: string;
-    match_link: string;
+  home_team: string;
+  away_team: string;
+  match_link: string;
+  match_date: string;
+  fixture: string;
 }
 
 export interface ITeam {
-    name: string;
-    description: string;
-    size: number;
-    coach: string;
+  full_name: string;
+  short_name: string;
+  size: number;
+  coach: string;
 }

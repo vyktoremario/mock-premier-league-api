@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UserModel } from "../../models";
+import { IUser } from "../../types";
 import { generateToken } from "../../utils/auth";
 import ResponseStatus from "../../utils/response";
 
@@ -10,7 +11,7 @@ export const registerUserController = async function (
   res: Response
 ): Promise<Response> {
   try {
-    const { email, password, firstName, lastName, roles, gender } =
+    const { email, password, first_name, last_name, role, username }: IUser =
       req.body;
     const exist = await UserModel.findOne({ email });
     if (exist) {
@@ -19,16 +20,16 @@ export const registerUserController = async function (
     }
 
     const newUser = new UserModel({
-        email: email.toLowerCase(),
-        password,
-        firstName,
-        lastName,
-        gender,
-        roles
+      email: email.toLowerCase(),
+      password,
+      first_name,
+      last_name,
+      username,
+      role,
     });
     await newUser.save();
 
-    const token = generateToken(newUser._id);
+    const token = await generateToken(newUser._id as unknown as string);
     responseStatus.setSuccess(201, "successful", { data: newUser, token });
     return responseStatus.send(res);
   } catch (error) {

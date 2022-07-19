@@ -9,9 +9,9 @@ export const connectDB = () => {
   const url: string = process.env.DATABASE_URL as string;
   mongoose
     .connect(url, {
-        dbName: "mock-premier-league",
-        user: "root",
-        pass: "pass12345",
+      dbName: "mock-premier-league",
+      user: "root",
+      pass: "pass12345",
     })
     .then(() => {
       console.log("info", message);

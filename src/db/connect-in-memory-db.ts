@@ -1,19 +1,23 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
-const mongoServer = new MongoMemoryServer();
+let mongoServer: MongoMemoryServer;
+let mongo: Mongoose;
+const mongod = async () => {
+  mongoServer = await MongoMemoryServer.create();
+  return mongoServer;
+};
 
 export const connectInMemoryDB = async (): Promise<void> => {
-  const uri = await mongoServer.getUri();
+  mongoServer = await mongod();
+  const uri = mongoServer.getUri();
 
-  mongoose
-    .connect(uri)
-    .then(() => console.log("info", "connected to memory-server"))
-    .catch(() => console.log("error", "could not connect"));
+  mongo = await mongoose.connect(uri);
 };
 
 export const dbDisconnect = async (): Promise<void> => {
-  await mongoose.connection.dropDatabase();
-  await mongoose.connection.close();
-  await mongoServer.stop();
+  mongo.disconnect();
+  if (mongoServer) {
+    await mongoServer.stop();
+  }
 };
